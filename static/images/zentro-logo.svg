@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Circle Border -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="#1a1a1a" stroke-width="2.5"/>
+  <circle cx="100" cy="100" r="90" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+  
+  <!-- Z Shape (Modern Curved Design) -->
+  <g>
+    <!-- Top horizontal line -->
+    <path d="M 55 60 Q 70 55 85 60 L 140 60 Q 145 59 145 65 Q 145 70 140 71 L 60 71 Q 50 71 50 60 Q 50 50 60 50 L 135 50 Q 150 50 150 60" 
+          fill="none" stroke="#1a1a1a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Diagonal line -->
+    <line x1="60" y1="71" x2="135" y2="129" stroke="#1a1a1a" stroke-width="12" stroke-linecap="round"/>
+    
+    <!-- Bottom horizontal line -->
+    <path d="M 50 130 Q 50 120 60 120 L 140 119 Q 145 119 145 135 Q 145 140 140 140 L 60 140 Q 50 145 55 142 L 145 142 Q 150 142 150 150 Q 150 160 140 160 L 55 160 Q 50 160 50 150" 
+          fill="none" stroke="#1a1a1a" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

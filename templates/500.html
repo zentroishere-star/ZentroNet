@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Server Error - Zentro{% endblock %}
+
+{% block content %}
+<section class="hero" style="min-height: 80vh;">
+    <div class="hero-content">
+        <h1 style="font-size: 5rem; margin-bottom: 20px;">500</h1>
+        <h2>Server Error</h2>
+        <p style="font-size: 1.1rem; margin-top: 20px; margin-bottom: 40px;">Something went wrong on our end. Please try again later.</p>
+        <a href="{% url 'home:home' %}" class="btn btn-primary">Go Home</a>
+    </div>
+</section>
+{% endblock %}

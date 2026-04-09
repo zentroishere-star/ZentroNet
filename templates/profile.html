@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile - Zentro{% endblock %}
+
+{% block content %}
+<!-- PAGE HEADER -->
+<section class="hero" style="min-height: 40vh; padding-top: 40px;">
+    <div class="hero-content">
+        <h1>My Profile</h1>
+        <p>Manage your account settings</p>
+    </div>
+</section>
+
+<!-- PROFILE SECTION -->
+<section class="section">
+    <div class="container" style="max-width: 800px;">
+        <div class="grid grid-2" style="gap: 40px;">
+            <!-- Avatar -->
+            <div style="text-align: center;">
+                {% if user_profile.avatar %}
+                <img src="{{ user_profile.avatar.url }}" alt="{{ user.username }}" style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color);">
+                {% else %}
+                <div style="width: 150px; height: 150px; border-radius: 50%; background: var(--primary-color); display: flex; align-items: center; justify-content: center; color: var(--bg-dark); font-size: 3rem; font-weight: bold; margin: 0 auto;">
+                    {{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}
+                </div>
+                {% endif %}
+                <h2 style="margin-top: 20px;">{{ user.first_name }} {{ user.last_name }}</h2>
+                <p style="color: var(--primary-color);">@{{ user.username }}</p>
+            </div>
+            
+            <!-- Profile Form -->
+            <div>
+                <form method="post" enctype="multipart/form-data" action="{% url 'home:profile' %}">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" value="{{ user.last_name }}" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" value="{{ user.email }}" class="form-control" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ADDITIONAL INFO -->
+<section class="section" style="background: rgba(26, 26, 26, 0.5);">
+    <div class="container" style="max-width: 800px;">
+        <h2>Additional Information</h2>
+        
+        <form method="post" enctype="multipart/form-data" action="{% url 'home:profile' %}" style="margin-top: 30px;">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label>Profile Picture</label>
+                {{ form.avatar }}
+            </div>
+            
+            <div class="form-group">
+                <label>Bio</label>
+                {{ form.bio }}
+            </div>
+            
+            <div class="form-group">
+                <label>Phone</label>
+                {{ form.phone }}
+            </div>
+            
+            <div class="form-group">
+                <label>Location</label>
+                {{ form.location }}
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+        </form>
+    </div>
+</section>
+
+<!-- ACCOUNT ACTIONS -->
+<section class="section">
+    <div class="container" style="max-width: 800px;">
+        <h2>Account Actions</h2>
+        
+        <div class="grid grid-2" style="gap: 20px; margin-top: 30px;">
+            <button class="btn btn-outline" style="text-align: left; padding: 20px;">
+                <i class="fas fa-lock"></i> Change Password
+            </button>
+            <a href="{% url 'home:logout' %}" class="btn btn-outline" style="text-align: left; padding: 20px;">
+                <i class="fas fa-sign-out-alt"></i> Log Out
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

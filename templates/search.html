@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - Zentro{% endblock %}
+
+{% block content %}
+<!-- PAGE HEADER -->
+<section class="hero" style="min-height: 50vh; padding-top: 40px;">
+    <div class="hero-content">
+        <h1>Search Results</h1>
+        <p>Results for "{{ query }}"</p>
+    </div>
+</section>
+
+<!-- SEARCH RESULTS -->
+<section class="section">
+    <div class="container">
+        {% if projects or team %}
+            {% if projects %}
+            <div style="margin-bottom: 60px;">
+                <h2 style="margin-bottom: 30px;">Projects {{ projects|length }}</h2>
+                <div class="grid grid-3">
+                    {% for project in projects %}
+                    <div class="project-card">
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}">
+                        <div class="project-info">
+                            <h3>{{ project.title }}</h3>
+                            <p>{{ project.description|truncatewords:15 }}</p>
+                            <a href="{% url 'home:project_detail' project.slug %}" class="btn btn-outline" style="margin-top: 15px;">View Project</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            
+            {% if team %}
+            <div>
+                <h2 style="margin-bottom: 30px;">Team Members {{ team|length }}</h2>
+                <div class="grid grid-4">
+                    {% for member in team %}
+                    <div class="team-member-card">
+                        <div class="member-image">
+                            <img src="{{ member.photo.url }}" alt="{{ member.name }}">
+                        </div>
+                        <h3 class="member-name">{{ member.name }}</h3>
+                        <p class="member-role">{{ member.get_role_display }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+        <div style="text-align: center; padding: 60px 0;">
+            <h3>No results found for "{{ query }}"</h3>
+            <p style="margin-top: 10px; color: var(--text-secondary);">Try searching with different keywords</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
