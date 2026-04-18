@@ -1,10 +1,9 @@
-{% extends 'base.html' %}
+{% extends 'dashboard_base.html' %}
 {% load static %}
 
 {% block title %}Dashboard - Zentro Admin{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 <style>
     body {
         padding-top: 70px;
@@ -67,7 +66,6 @@
 {% endblock %}
 
 {% block content %}
-{% include 'dashboard/navbar.html' %}
 <div class="dashboard-container">
     <!-- Sidebar -->
     <nav class="dashboard-sidebar">
