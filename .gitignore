@@ -1,10 +1,53 @@
+# Virtual Environments
 venv/
+venv_proper/
+.venv/
+env/
+ENV/
+
+# Python
 *.pyc
+*.pyo
+*.pyd
 __pycache__/
+*.egg-info/
+dist/
+build/
+
+# Database
 db.sqlite3
+*.db
+
+# Environment variables
 .env
-media/
-*.log
-.DS_Store
+.env.local
+.env.*.local
+
+# IDE & OS
 .vscode/
+.idea/
 *.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Media uploads (keep template structure)
+/media/*
+!/media/.gitkeep
+
+# Logs
+*.log
+*.pot
+
+# Coverage
+.coverage
+htmlcov/
+
+# Node modules (if using frontend build tools)
+node_modules/
+npm-debug.log
+
+# Static files compilation
+/staticfiles/
+.webassets-cache
