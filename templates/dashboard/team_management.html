@@ -29,7 +29,7 @@
                 <p style="color: #64748b;">Manage your team</p>
             </div>
             <div style="text-align: right;">
-                <a href="/admin/home/teammember/add/" class="btn" style="background: #0F766E; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;"><i class="fas fa-plus"></i> Add Member</a>
+                <a href="{% url 'home:dashboard_team_add' %}" class="btn" style="background: #0F766E; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;"><i class="fas fa-plus"></i> Add Member</a>
             </div>
         </div>
         
@@ -50,8 +50,8 @@
                             <p style="margin: 0 0 10px 0; color: #14B8A6; font-size: 0.9rem;">{{ member.get_role_display }}</p>
                             <p style="margin: 0; color: #64748b; font-size: 0.9rem; line-height: 1.6;">{{ member.bio|truncatewords:15 }}</p>
                             <div style="margin-top: 15px; display: flex; gap: 10px;">
-                                <a href="/admin/home/teammember/{{ member.id }}/change/" style="flex: 1; text-align: center; padding: 8px; background: #0F766E; color: white; border-radius: 5px; text-decoration: none; font-size: 0.9rem;"><i class="fas fa-edit"></i> Edit</a>
-                                <a href="/admin/home/teammember/{{ member.id }}/delete/" style="flex: 1; text-align: center; padding: 8px; background: #ef4444; color: white; border-radius: 5px; text-decoration: none; font-size: 0.9rem;" onclick="return confirm('Delete this member?')"><i class="fas fa-trash"></i> Delete</a>
+                                <a href="{% url 'home:dashboard_team_edit' member.id %}" style="flex: 1; text-align: center; padding: 8px; background: #0F766E; color: white; border-radius: 5px; text-decoration: none; font-size: 0.9rem;"><i class="fas fa-edit"></i> Edit</a>
+                                <a href="{% url 'home:dashboard_team_delete' member.id %}" style="flex: 1; text-align: center; padding: 8px; background: #ef4444; color: white; border-radius: 5px; text-decoration: none; font-size: 0.9rem;" onclick="return confirm('Delete this member?')"><i class="fas fa-trash"></i> Delete</a>
                             </div>
                         </div>
                     </div>

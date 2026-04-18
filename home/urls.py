@@ -30,8 +30,19 @@ urlpatterns = [
     path('dashboard/message/<int:pk>/', views_dashboard.message_detail, name='dashboard_message_detail'),
     path('dashboard/message/<int:pk>/replied/', views_dashboard.mark_replied, name='dashboard_mark_replied'),
     path('dashboard/message/<int:pk>/delete/', views_dashboard.delete_message, name='dashboard_delete_message'),
+    
+    # Team Dashboard
     path('dashboard/team/', views_dashboard.team_management, name='dashboard_team'),
+    path('dashboard/team/add/', views_dashboard.add_team_member, name='dashboard_team_add'),
+    path('dashboard/team/<int:pk>/edit/', views_dashboard.edit_team_member, name='dashboard_team_edit'),
+    path('dashboard/team/<int:pk>/delete/', views_dashboard.delete_team_member, name='dashboard_team_delete'),
+    
+    # Projects Dashboard
     path('dashboard/projects/', views_dashboard.projects_management, name='dashboard_projects'),
+    path('dashboard/projects/add/', views_dashboard.add_project, name='dashboard_projects_add'),
+    path('dashboard/projects/<int:pk>/edit/', views_dashboard.edit_project, name='dashboard_projects_edit'),
+    path('dashboard/projects/<int:pk>/delete/', views_dashboard.delete_project, name='dashboard_projects_delete'),
+    
     path('dashboard/subscribers/', views_dashboard.subscribers, name='dashboard_subscribers'),
     path('dashboard/settings/', views_dashboard.dashboard_settings, name='dashboard_settings'),
     path('dashboard/logout/', views_dashboard.dashboard_logout, name='dashboard_logout'),

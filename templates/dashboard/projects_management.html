@@ -29,7 +29,7 @@
                 <p style="color: #64748b;">Manage your projects</p>
             </div>
             <div style="text-align: right;">
-                <a href="/admin/home/project/add/" class="btn" style="background: #0F766E; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;"><i class="fas fa-plus"></i> Add Project</a>
+                <a href="{% url 'home:dashboard_projects_add' %}" class="btn" style="background: #0F766E; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none;"><i class="fas fa-plus"></i> Add Project</a>
             </div>
         </div>
         
@@ -50,8 +50,8 @@
                             <p style="margin: 0 0 10px 0; color: #14B8A6; font-size: 0.9rem;"><span style="background: #f0fdf4; padding: 3px 8px; border-radius: 3px;">{{ project.get_status_display }}</span> {% if project.featured %}<span style="background: #fef3c7; color: #92400e; padding: 3px 8px; border-radius: 3px; margin-left: 5px;">Featured</span>{% endif %}</p>
                             <p style="margin: 0; color: #64748b; font-size: 0.9rem; line-height: 1.6;">{{ project.description|truncatewords:15 }}</p>
                             <div style="margin-top: 15px; display: flex; gap: 10px;">
-                                <a href="/admin/home/project/{{ project.id }}/change/" style="flex: 1; text-align: center; padding: 8px; background: #0F766E; color: white; border-radius: 5px; text-decoration: none; font-size: 0.9rem;"><i class="fas fa-edit"></i> Edit</a>
-                                <a href="/admin/home/project/{{ project.id }}/delete/" style="flex: 1; text-align: center; padding: 8px; background: #ef4444; color: white; border-radius: 5px; text-decoration: none; font-size: 0.9rem;" onclick="return confirm('Delete this project?')"><i class="fas fa-trash"></i> Delete</a>
+                                <a href="{% url 'home:dashboard_projects_edit' project.id %}" style="flex: 1; text-align: center; padding: 8px; background: #0F766E; color: white; border-radius: 5px; text-decoration: none; font-size: 0.9rem;"><i class="fas fa-edit"></i> Edit</a>
+                                <a href="{% url 'home:dashboard_projects_delete' project.id %}" style="flex: 1; text-align: center; padding: 8px; background: #ef4444; color: white; border-radius: 5px; text-decoration: none; font-size: 0.9rem;" onclick="return confirm('Delete this project?')"><i class="fas fa-trash"></i> Delete</a>
                             </div>
                         </div>
                     </div>

@@ -85,6 +85,11 @@ def message_detail(request, pk):
     message.is_read = True
     message.save()
     
+    if request.method == 'POST':
+        message.is_replied = True
+        message.save()
+        return redirect('home:dashboard_messages')
+    
     context = {'message': message}
     return render(request, 'dashboard/message_detail.html', context)
 
@@ -138,6 +143,80 @@ def team_management(request):
 
 
 @login_required(login_url='home:login')
+def add_team_member(request):
+    """Add new team member."""
+    if not request.user.is_staff:
+        return redirect('home:home')
+    
+    if request.method == 'POST':
+        try:
+            team = TeamMember()
+            team.name = request.POST.get('name')
+            team.role = request.POST.get('role')
+            team.bio = request.POST.get('bio')
+            team.email = request.POST.get('email')
+            team.phone = request.POST.get('phone', '')
+            team.twitter = request.POST.get('twitter', '')
+            team.linkedin = request.POST.get('linkedin', '')
+            team.github = request.POST.get('github', '')
+            team.order = int(request.POST.get('order', 0))
+            
+            if 'photo' in request.FILES:
+                team.photo = request.FILES['photo']
+            
+            team.save()
+            return redirect('home:dashboard_team')
+        except Exception as e:
+            context = {'error': str(e)}
+            return render(request, 'dashboard/add_team_member.html', context)
+    
+    roles = TeamMember.ROLE_CHOICES
+    context = {'roles': roles}
+    return render(request, 'dashboard/add_team_member.html', context)
+
+
+@login_required(login_url='home:login')
+def edit_team_member(request, pk):
+    """Edit team member."""
+    if not request.user.is_staff:
+        return redirect('home:home')
+    
+    team = get_object_or_404(TeamMember, pk=pk)
+    
+    if request.method == 'POST':
+        team.name = request.POST.get('name')
+        team.role = request.POST.get('role')
+        team.bio = request.POST.get('bio')
+        team.email = request.POST.get('email')
+        team.phone = request.POST.get('phone', '')
+        team.twitter = request.POST.get('twitter', '')
+        team.linkedin = request.POST.get('linkedin', '')
+        team.github = request.POST.get('github', '')
+        team.order = int(request.POST.get('order', 0))
+        
+        if 'photo' in request.FILES:
+            team.photo = request.FILES['photo']
+        
+        team.save()
+        return redirect('home:dashboard_team')
+    
+    roles = TeamMember.ROLE_CHOICES
+    context = {'team': team, 'roles': roles}
+    return render(request, 'dashboard/edit_team_member.html', context)
+
+
+@login_required(login_url='home:login')
+def delete_team_member(request, pk):
+    """Delete team member."""
+    if not request.user.is_staff:
+        return redirect('home:home')
+    
+    team = get_object_or_404(TeamMember, pk=pk)
+    team.delete()
+    return redirect('home:dashboard_team')
+
+
+@login_required(login_url='home:login')
 def projects_management(request):
     """Projects management view."""
     if not request.user.is_staff:
@@ -163,6 +242,81 @@ def projects_management(request):
         'search': search,
     }
     return render(request, 'dashboard/projects_management.html', context)
+
+
+@login_required(login_url='home:login')
+def add_project(request):
+    """Add new project."""
+    if not request.user.is_staff:
+        return redirect('home:home')
+    
+    if request.method == 'POST':
+        try:
+            from django.utils.text import slugify
+            
+            project = Project()
+            project.title = request.POST.get('title')
+            project.slug = slugify(project.title)
+            project.description = request.POST.get('description')
+            project.technologies = request.POST.get('technologies')
+            project.status = request.POST.get('status', 'Completed')
+            project.live_url = request.POST.get('live_url', '')
+            project.github_url = request.POST.get('github_url', '')
+            project.featured = request.POST.get('featured') in ['on', 'true']
+            project.order = int(request.POST.get('order', 0))
+            
+            if 'image' in request.FILES:
+                project.image = request.FILES['image']
+            
+            project.save()
+            return redirect('home:dashboard_projects')
+        except Exception as e:
+            context = {'error': str(e)}
+            return render(request, 'dashboard/add_project.html', context)
+    
+    statuses = Project.STATUS_CHOICES
+    context = {'statuses': statuses}
+    return render(request, 'dashboard/add_project.html', context)
+
+
+@login_required(login_url='home:login')
+def edit_project(request, pk):
+    """Edit project."""
+    if not request.user.is_staff:
+        return redirect('home:home')
+    
+    project = get_object_or_404(Project, pk=pk)
+    
+    if request.method == 'POST':
+        project.title = request.POST.get('title')
+        project.description = request.POST.get('description')
+        project.technologies = request.POST.get('technologies')
+        project.status = request.POST.get('status', 'Completed')
+        project.live_url = request.POST.get('live_url', '')
+        project.github_url = request.POST.get('github_url', '')
+        project.featured = request.POST.get('featured') in ['on', 'true']
+        project.order = int(request.POST.get('order', 0))
+        
+        if 'image' in request.FILES:
+            project.image = request.FILES['image']
+        
+        project.save()
+        return redirect('home:dashboard_projects')
+    
+    statuses = Project.STATUS_CHOICES
+    context = {'project': project, 'statuses': statuses}
+    return render(request, 'dashboard/edit_project.html', context)
+
+
+@login_required(login_url='home:login')
+def delete_project(request, pk):
+    """Delete project."""
+    if not request.user.is_staff:
+        return redirect('home:home')
+    
+    project = get_object_or_404(Project, pk=pk)
+    project.delete()
+    return redirect('home:dashboard_projects')
 
 
 @login_required(login_url='home:login')

@@ -1,0 +1,145 @@
+{% extends 'dashboard/add_team_member.html' %}
+
+{% block title %}Edit Team Member - Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <nav class="dashboard-sidebar">
+        <h3>Dashboard</h3>
+        <ul>
+            <li><a href="{% url 'home:dashboard' %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'home:dashboard_messages' %}"><i class="fas fa-envelope"></i> Messages</a></li>
+            <li><a href="{% url 'home:dashboard_team' %}" class="active"><i class="fas fa-users"></i> Team</a></li>
+            <li><a href="{% url 'home:dashboard_projects' %}"><i class="fas fa-project-diagram"></i> Projects</a></li>
+            <li><a href="{% url 'home:dashboard_subscribers' %}"><i class="fas fa-bell"></i> Subscribers</a></li>
+            <li><a href="{% url 'home:dashboard_settings' %}"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+        <div class="dashboard-logout">
+            <ul>
+                <li><a href="{% url 'home:dashboard_logout' %}" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="dashboard-content">
+        <div class="dashboard-header">
+            <div>
+                <h1><i class="fas fa-user-edit"></i> Edit Team Member</h1>
+            </div>
+            <a href="{% url 'home:dashboard_team' %}" class="btn btn-outline" style="padding: 10px 20px;">← Back</a>
+        </div>
+        
+        <div class="dashboard-card" style="max-width: 700px;">
+            {% if error %}
+            <div style="background: #fee2e2; color: #dc2626; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                <strong>Error:</strong> {{ error }}
+            </div>
+            {% endif %}
+            
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Basic Info -->
+                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-top: 0; color: #0F766E;">Basic Information</h3>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Full Name *</label>
+                        <input type="text" name="name" placeholder="John Doe" value="{{ team.name }}" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Role *</label>
+                        <select name="role" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                            {% for code, label in roles %}
+                            <option value="{{ code }}" {% if code == team.role %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Bio *</label>
+                        <textarea name="bio" placeholder="Tell about this team member..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; min-height: 100px; font-family: inherit;">{{ team.bio }}</textarea>
+                    </div>
+                </div>
+                
+                <!-- Contact Info -->
+                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-top: 0; color: #0F766E;">Contact Information</h3>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Email *</label>
+                        <input type="email" name="email" placeholder="john@example.com" value="{{ team.email }}" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Phone (Optional)</label>
+                        <input type="tel" name="phone" placeholder="+91 9876543210" value="{{ team.phone }}" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    </div>
+                </div>
+                
+                <!-- Social Links -->
+                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-top: 0; color: #0F766E;">Social Links (Optional)</h3>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;"><i class="fab fa-linkedin"></i> LinkedIn</label>
+                        <input type="url" name="linkedin" placeholder="https://linkedin.com/in/username" value="{{ team.linkedin }}" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;"><i class="fab fa-github"></i> GitHub</label>
+                        <input type="url" name="github" placeholder="https://github.com/username" value="{{ team.github }}" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;"><i class="fab fa-twitter"></i> Twitter</label>
+                        <input type="url" name="twitter" placeholder="https://twitter.com/username" value="{{ team.twitter }}" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    </div>
+                </div>
+                
+                <!-- Media & Settings -->
+                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="margin-top: 0; color: #0F766E;">Media & Settings</h3>
+                    
+                    {% if team.photo %}
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Current Photo</label>
+                        <img src="{{ team.photo.url }}" alt="{{ team.name }}" style="max-width: 150px; border-radius: 8px;">
+                    </div>
+                    {% endif %}
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Change Photo (Optional)</label>
+                        <input type="file" name="photo" accept="image/*" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Display Order</label>
+                        <input type="number" name="order" value="{{ team.order }}" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                        <small style="color: #64748b;">Lower number appears first</small>
+                    </div>
+                </div>
+                
+                <!-- Submit -->
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <a href="{% url 'home:dashboard_team' %}" class="btn" style="padding: 12px 30px; background: #e2e8f0; color: #475569; border-radius: 5px; text-decoration: none; font-weight: 600;">Cancel</a>
+                    <button type="submit" style="padding: 12px 30px; background: #0F766E; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 1rem;"><i class="fas fa-save"></i> Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-outline {
+        background: white;
+        color: #0F766E;
+        border: 1px solid #0F766E;
+    }
+    
+    .btn-outline:hover {
+        background: #f0fdf4;
+    }
+</style>
+{% endblock %}
