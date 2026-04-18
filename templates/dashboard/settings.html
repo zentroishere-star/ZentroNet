@@ -2,7 +2,9 @@
 {% load static %}
 
 {% block title %}Settings - Admin Dashboard{% endblock %}
-
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
 {% block content %}
 <div class="dashboard-container">
     <nav class="dashboard-sidebar">

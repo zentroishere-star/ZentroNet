@@ -3,8 +3,13 @@
 
 {% block title %}Add Project - Dashboard{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
 {% block content %}
 <div class="dashboard-container">
+    <!-- Sidebar -->
     <nav class="dashboard-sidebar">
         <h3>Dashboard</h3>
         <ul>
@@ -23,50 +28,53 @@
     </nav>
     
     <div class="dashboard-content">
+        <!-- Header -->
         <div class="dashboard-header">
             <div>
                 <h1><i class="fas fa-plus-circle"></i> Add New Project</h1>
             </div>
-            <a href="{% url 'home:dashboard_projects' %}" class="btn btn-outline" style="padding: 10px 20px;">← Back</a>
+            <a href="{% url 'home:dashboard_projects' %}" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back</a>
         </div>
         
+        <!-- Form Card -->
         <div class="dashboard-card" style="max-width: 700px;">
             {% if error %}
-            <div style="background: #fee2e2; color: #dc2626; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <strong>Error:</strong> {{ error }}
+            <div class="alert alert-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <span><strong>Error:</strong> {{ error }}</span>
             </div>
             {% endif %}
             
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 
-                <!-- Basic Info -->
-                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0; color: #0F766E;">Project Details</h3>
+                <!-- Project Details Section -->
+                <div style="background: #f9fafb; padding: 25px; border-radius: 10px; margin-bottom: 25px;">
+                    <h3 style="margin-top: 0; color: #0F766E; margin-bottom: 20px;">Project Details</h3>
                     
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Project Title *</label>
-                        <input type="text" name="title" placeholder="E-Commerce Platform" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    <div class="form-group">
+                        <label for="title"><i class="fas fa-heading"></i> Project Title *</label>
+                        <input type="text" id="title" name="title" placeholder="E-Commerce Platform" required>
                     </div>
                     
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Description *</label>
-                        <textarea name="description" placeholder="Describe your project..." required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; min-height: 120px; font-family: inherit;"></textarea>
+                    <div class="form-group">
+                        <label for="description"><i class="fas fa-file-alt"></i> Description *</label>
+                        <textarea id="description" name="description" placeholder="Describe your project..." required></textarea>
                     </div>
                     
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Technologies (comma-separated) *</label>
-                        <input type="text" name="technologies" placeholder="React, Django, PostgreSQL" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    <div class="form-group">
+                        <label for="technologies"><i class="fas fa-code"></i> Technologies (comma-separated) *</label>
+                        <input type="text" id="technologies" name="technologies" placeholder="React, Django, PostgreSQL" required>
                     </div>
                 </div>
                 
-                <!-- Status & Featured -->
-                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0; color: #0F766E;">Status & Visibility</h3>
+                <!-- Status & Visibility Section -->
+                <div style="background: #f9fafb; padding: 25px; border-radius: 10px; margin-bottom: 25px;">
+                    <h3 style="margin-top: 0; color: #0F766E; margin-bottom: 20px;">Status & Visibility</h3>
                     
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Status *</label>
-                        <select name="status" required style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    <div class="form-group">
+                        <label for="status"><i class="fas fa-tasks"></i> Status *</label>
+                        <select id="status" name="status" required>
                             <option value="">-- Select Status --</option>
                             <option value="Completed">Completed</option>
                             <option value="In Progress">In Progress</option>
@@ -74,64 +82,56 @@
                         </select>
                     </div>
                     
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: flex; align-items: center; font-weight: 600; color: #0F766E; cursor: pointer;">
-                            <input type="checkbox" name="featured" value="true" style="margin-right: 10px; width: 18px; height: 18px; cursor: pointer;">
-                            <span>Featured Project</span>
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input type="checkbox" id="featured" name="featured" value="true" style="width: 18px; height: 18px; margin-right: 10px; cursor: pointer;">
+                            <span><i class="fas fa-star"></i> Featured Project</span>
                         </label>
                     </div>
                 </div>
                 
-                <!-- Links -->
-                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0; color: #0F766E;">Project Links</h3>
+                <!-- Project Links Section -->
+                <div style="background: #f9fafb; padding: 25px; border-radius: 10px; margin-bottom: 25px;">
+                    <h3 style="margin-top: 0; color: #0F766E; margin-bottom: 20px;">Project Links</h3>
                     
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;"><i class="fas fa-globe"></i> Live URL (Optional)</label>
-                        <input type="url" name="live_url" placeholder="https://example.com" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
+                    <div class="form-group">
+                        <label for="live_url"><i class="fas fa-globe"></i> Live URL (Optional)</label>
+                        <input type="url" id="live_url" name="live_url" placeholder="https://example.com">
                     </div>
                     
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;"><i class="fab fa-github"></i> GitHub URL (Optional)</label>
-                        <input type="url" name="github_url" placeholder="https://github.com/username/project" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
-                    </div>
-                </div>
-                
-                <!-- Media & Settings -->
-                <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <h3 style="margin-top: 0; color: #0F766E;">Media & Settings</h3>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Project Image (800x400px recommended)</label>
-                        <input type="file" name="image" accept="image/*" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
-                    </div>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 8px; font-weight: 600; color: #0F766E;">Display Order</label>
-                        <input type="number" name="order" value="0" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem;">
-                        <small style="color: #64748b;">Lower number appears first</small>
+                    <div class="form-group">
+                        <label for="github_url"><i class="fab fa-github"></i> GitHub URL (Optional)</label>
+                        <input type="url" id="github_url" name="github_url" placeholder="https://github.com/username/project">
                     </div>
                 </div>
                 
-                <!-- Submit -->
-                <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                    <a href="{% url 'home:dashboard_projects' %}" class="btn" style="padding: 12px 30px; background: #e2e8f0; color: #475569; border-radius: 5px; text-decoration: none; font-weight: 600;">Cancel</a>
-                    <button type="submit" style="padding: 12px 30px; background: #0F766E; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 1rem;"><i class="fas fa-save"></i> Add Project</button>
+                <!-- Media & Settings Section -->
+                <div style="background: #f9fafb; padding: 25px; border-radius: 10px; margin-bottom: 25px;">
+                    <h3 style="margin-top: 0; color: #0F766E; margin-bottom: 20px;">Media & Settings</h3>
+                    
+                    <div class="form-group">
+                        <label for="image"><i class="fas fa-image"></i> Project Image (800x400px recommended)</label>
+                        <input type="file" id="image" name="image" accept="image/*">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="order"><i class="fas fa-list-ol"></i> Display Order</label>
+                        <input type="number" id="order" name="order" value="0">
+                        <small style="color: #64748b; display: block; margin-top: 5px;">Lower number appears first</small>
+                    </div>
+                </div>
+                
+                <!-- Form Actions -->
+                <div style="display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px;">
+                    <a href="{% url 'home:dashboard_projects' %}" class="btn btn-outline">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Add Project
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<style>
-    .btn-outline {
-        background: white;
-        color: #0F766E;
-        border: 1px solid #0F766E;
-    }
-    
-    .btn-outline:hover {
-        background: #f0fdf4;
-    }
-</style>
 {% endblock %}
