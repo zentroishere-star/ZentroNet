@@ -1,0 +1,323 @@
+<!-- Dashboard Navbar - Include in all dashboard pages -->
+<nav class="dashboard-navbar">
+    <div class="navbar-left">
+        <div class="navbar-logo">
+            <i class="fas fa-lock-open"></i>
+            <span>Zentro Admin</span>
+        </div>
+    </div>
+    
+    <div class="navbar-center">
+        <div class="navbar-search">
+            <input type="text" class="search-input" placeholder="Quick search..." id="quickSearch">
+            <i class="fas fa-search"></i>
+        </div>
+    </div>
+    
+    <div class="navbar-right">
+        <div class="navbar-user">
+            <span class="user-name">{{ request.user.get_full_name|default:request.user.username }}</span>
+            <div class="user-dropdown">
+                <button class="user-btn" id="userMenuBtn">
+                    <img src="https://ui-avatars.com/api/?name={{ request.user.get_full_name|default:request.user.username }}&background=0F766E&color=fff&size=36" alt="User" class="user-avatar">
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div class="dropdown-menu" id="userMenu">
+                    <a href="{% url 'home:dashboard_settings' %}" class="dropdown-item">
+                        <i class="fas fa-cog"></i> Settings
+                    </a>
+                    <a href="{% url 'home:profile' %}" class="dropdown-item">
+                        <i class="fas fa-user-circle"></i> Profile
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="{% url 'home:dashboard_logout' %}" class="dropdown-item logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<style>
+    .dashboard-navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 70px;
+        background: linear-gradient(135deg, #0F766E 0%, #14B8A6 100%);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 30px;
+        z-index: 2000;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .navbar-left {
+        flex: 0 0 auto;
+    }
+    
+    .navbar-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+    }
+    
+    .navbar-logo i {
+        font-size: 1.4rem;
+    }
+    
+    .navbar-center {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+    
+    .navbar-search {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .search-input {
+        width: 100%;
+        padding: 10px 16px 10px 40px;
+        border: none;
+        border-radius: 25px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #0F766E;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+    }
+    
+    .search-input::placeholder {
+        color: #a0aec0;
+    }
+    
+    .search-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+    
+    .navbar-search i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #a0aec0;
+        font-size: 0.9rem;
+        pointer-events: none;
+    }
+    
+    .navbar-right {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .navbar-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+    }
+    
+    .user-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+        max-width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .user-dropdown {
+        position: relative;
+    }
+    
+    .user-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 25px;
+        padding: 4px 12px 4px 4px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: white;
+    }
+    
+    .user-btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+    
+    .user-btn i {
+        font-size: 0.8rem;
+        transition: transform 0.3s ease;
+    }
+    
+    .user-btn.active i {
+        transform: rotate(180deg);
+    }
+    
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        min-width: 220px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        overflow: hidden;
+        z-index: 1000;
+    }
+    
+    .dropdown-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 16px;
+        color: #475569;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border-left: 3px solid transparent;
+    }
+    
+    .dropdown-item:hover {
+        background: #f9fafb;
+        color: #0F766E;
+        border-left-color: #0F766E;
+        padding-left: 19px;
+    }
+    
+    .dropdown-item i {
+        width: 18px;
+        text-align: center;
+        color: #14B8A6;
+    }
+    
+    .dropdown-item.logout {
+        color: #ef4444;
+    }
+    
+    .dropdown-item.logout:hover {
+        background: #fee2e2;
+        color: #dc2626;
+    }
+    
+    .dropdown-item.logout i {
+        color: #ef4444;
+    }
+    
+    .dropdown-divider {
+        height: 1px;
+        background: #e2e8f0;
+        margin: 8px 0;
+    }
+    
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .dashboard-navbar {
+            padding: 0 20px;
+        }
+        
+        .navbar-center {
+            max-width: 300px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard-navbar {
+            padding: 0 15px;
+        }
+        
+        .navbar-center {
+            display: none;
+        }
+        
+        .user-name {
+            display: none;
+        }
+        
+        .dashboard-navbar {
+            gap: 10px;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .dashboard-navbar {
+            padding: 0 12px;
+        }
+        
+        .navbar-logo span {
+            display: none;
+        }
+        
+        .user-btn {
+            padding: 6px;
+        }
+        
+        .user-btn i {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+    // User dropdown menu toggle
+    document.getElementById('userMenuBtn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        const menu = document.getElementById('userMenu');
+        const btn = this;
+        menu.classList.toggle('show');
+        btn.classList.toggle('active');
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        const userDropdown = document.querySelector('.user-dropdown');
+        if (!userDropdown.contains(e.target)) {
+            document.getElementById('userMenu').classList.remove('show');
+            document.getElementById('userMenuBtn').classList.remove('active');
+        }
+    });
+    
+    // Quick search functionality
+    document.getElementById('quickSearch').addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') {
+            const searchTerm = this.value.trim();
+            if (searchTerm) {
+                // Implement quick search across dashboard
+                console.log('Quick search for:', searchTerm);
+            }
+        }
+    });
+</script>

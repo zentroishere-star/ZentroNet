@@ -246,6 +246,8 @@ def signup(request):
 def user_login(request):
     """User login view."""
     if request.user.is_authenticated:
+        if request.user.is_staff:
+            return redirect('home:dashboard')
         return redirect('home:home')
     
     if request.method == 'POST':
@@ -264,13 +266,17 @@ def user_login(request):
                     user = None
             
             if user is not None:
-                login(request, user)
-                if form.cleaned_data.get('remember_me'):
-                    request.session.set_expiry(1209600)  # 2 weeks
-                next_page = request.GET.get('next')
-                if next_page:
-                    return redirect(next_page)
-                return redirect('home:profile')
+                if not user.is_staff:
+                    login(request, user)
+                    if form.cleaned_data.get('remember_me'):
+                        request.session.set_expiry(1209600)  # 2 weeks
+                    next_page = request.GET.get('next')
+                    if next_page:
+                        return redirect(next_page)
+                    return redirect('home:profile')
+                else:
+                    # Admin user - redirect to admin login page
+                    return redirect('home:admin_login')
     else:
         form = LoginForm()
     

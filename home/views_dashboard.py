@@ -1,11 +1,57 @@
 """Dashboard views for admin panel."""
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate, login
 from django.http import JsonResponse
 from django.db.models import Q
+from django.contrib.auth.models import User
 from .models import ContactMessage, TeamMember, Project, Testimonial, Newsletter
 from .forms import ContactForm
+
+
+def admin_login(request):
+    """Admin login view - dedicated admin login page."""
+    if request.user.is_authenticated and request.user.is_staff:
+        return redirect('home:dashboard')
+    
+    error = None
+    success = None
+    
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+        remember_me = request.POST.get('remember_me')
+        
+        if not username or not password:
+            error = 'Please enter both username and password.'
+        else:
+            # Try authenticate with username first
+            user = authenticate(request, username=username, password=password)
+            
+            # If not found, try with email
+            if user is None:
+                try:
+                    user_obj = User.objects.get(email=username)
+                    user = authenticate(request, username=user_obj.username, password=password)
+                except User.DoesNotExist:
+                    user = None
+            
+            if user is not None:
+                if not user.is_staff:
+                    error = 'Access denied. Admin privileges required.'
+                else:
+                    login(request, user)
+                    if remember_me:
+                        request.session.set_expiry(1209600)  # 2 weeks
+                    return redirect('home:dashboard')
+            else:
+                error = 'Invalid username/email or password.'
+    
+    context = {
+        'error': error,
+        'success': success,
+    }
+    return render(request, 'admin_login.html', context)
 
 
 @login_required(login_url='home:login')
