@@ -25,7 +25,7 @@ urlpatterns = [
     path('newsletter/subscribe/', views.newsletter_subscribe, name='newsletter_subscribe'),
     
     # Admin Access
-    path('admin/login/', views_dashboard.admin_login, name='admin_login'),
+    path('dashboard/admin-login/', views_dashboard.admin_login, name='admin_login'),
     
     # Dashboard
     path('dashboard/', views_dashboard.dashboard, name='dashboard'),
