@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-your-secret-key-change-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=True, cast=bool)
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 # Railway provides the domain via environment variable
 RAILWAY_DOMAIN = config('RAILWAY_PUBLIC_DOMAIN', default='')
@@ -118,24 +118,23 @@ LOGIN_REDIRECT_URL = 'home'
 
 # Session settings
 SESSION_COOKIE_AGE = 1209600  # 2 weeks
-SESSION_COOKIE_SECURE = not DEBUG
-CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool) if not DEBUG else False
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool) if not DEBUG else False
 
 # Production security settings
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SECURE_HSTS_SECONDS = 31536000
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    SECURE_BROWSER_XSS_FILTER = True
-    X_FRAME_OPTIONS = 'DENY'
-    
-    # CSRF trusted origins for Railway
-    if RAILWAY_DOMAIN:
-        CSRF_TRUSTED_ORIGINS = [
-            f'https://{RAILWAY_DOMAIN}',
-            f'https://*.{RAILWAY_DOMAIN}',
-        ]
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool) if not DEBUG else False
+SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=31536000, cast=int) if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=True, cast=bool) if not DEBUG else False
+SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', default=True, cast=bool) if not DEBUG else False
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+
+# CSRF trusted origins for Railway/Render
+if RAILWAY_DOMAIN:
+    CSRF_TRUSTED_ORIGINS = [
+        f'https://{RAILWAY_DOMAIN}',
+        f'https://*.{RAILWAY_DOMAIN}',
+    ]
 
 # WhiteNoise settings
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
