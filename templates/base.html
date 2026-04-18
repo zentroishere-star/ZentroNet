@@ -10,8 +10,9 @@
     
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}?v=4">
     <link rel="stylesheet" href="{% static 'css/whatsapp-location.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/dark-theme.css' %}?v=3">
     
     {% block extra_css %}{% endblock %}
 </head>
@@ -21,7 +22,7 @@
         <div class="container">
             <div class="navbar">
                 <a href="{% url 'home:home' %}" class="logo">
-                    <img src="{% static 'images/image.png' %}" alt="Zentro Logo" class="navbar-logo-img">
+                    <img src="{% static 'images/ZentroLogo.png' %}" alt="Zentro Logo" class="navbar-logo-img">
                     <span class="logo-text">ZENTRO</span>
                 </a>
                 

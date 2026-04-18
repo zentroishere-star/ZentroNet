@@ -10,7 +10,7 @@ class TeamMember(models.Model):
         ('CEO', 'Chief Executive Officer'),
         ('Web Developer', 'Web Developer'),
         ('Developer', 'Developer'),
-        ('Designer', 'Designer'),
+        ('Project Designer', 'Project Designer'),
         ('Manager', 'Project Manager'),
         ('Logo Designer', 'Logo Designer'),
         ('AIML Developer', 'AIML Developer'),

@@ -100,7 +100,7 @@ def about(request):
 
 def projects(request):
     """Projects list view - Limited info without login."""
-    projects_list = Project.objects.all()
+    projects_list = Project.objects.all().order_by('order', '-featured', '-created_at')
     
     # Filter by search
     search = request.GET.get('search', '')
@@ -146,10 +146,7 @@ def project_detail(request, slug):
 
 
 def team(request):
-    """Team page view - Login required."""
-    if not request.user.is_authenticated:
-        return redirect(f"{reverse('home:login')}?next={request.path}")
-    
+    """Team page view - Public access."""
     # Display all team members ordered by order field, then by name
     team_members = TeamMember.objects.all().order_by('order', 'name')
     

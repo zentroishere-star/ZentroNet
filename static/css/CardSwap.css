@@ -15,9 +15,9 @@
   top: 50%;
   left: 50%;
   border-radius: 12px;
-  border: 2px solid var(--primary-light);
-  background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
-  box-shadow: 0 10px 30px rgba(15, 118, 110, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.5);
+  background: rgba(30, 41, 59, 0.8);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   padding: 40px 30px;
   display: flex;
   flex-direction: column;
@@ -34,20 +34,21 @@
 }
 
 .card:hover {
-  border-color: var(--primary-color);
-  box-shadow: 0 15px 40px rgba(15, 118, 110, 0.25);
+  border-color: #A78BFA;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
 }
 
 .card h3 {
   font-size: 1.75rem;
-  color: var(--primary-color);
+  color: #A78BFA;
   margin-bottom: 15px;
   font-weight: 700;
   letter-spacing: -0.5px;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
 }
 
 .card p {
-  color: var(--text-secondary);
+  color: #CBD5E1;
   font-size: 1rem;
   line-height: 1.6;
   margin: 0;
@@ -56,14 +57,15 @@
 
 .card-icon {
   font-size: 3rem;
-  color: var(--primary-light);
+  color: #C4B5FD;
   margin-bottom: 20px;
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 0 15px rgba(167, 139, 250, 0.3);
 }
 
 .card:hover .card-icon {
   transform: scale(1.1) rotate(5deg);
-  color: var(--primary-color);
+  color: #A78BFA;
 }
 
 /* Responsive Design */
