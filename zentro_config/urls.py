@@ -14,6 +14,9 @@ urlpatterns = [
 handler404 = 'home.views.handler404'
 handler500 = 'home.views.handler500'
 
+# Serve media files in all environments (development and production)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Serve static files in development only (production uses WhiteNoise)
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
