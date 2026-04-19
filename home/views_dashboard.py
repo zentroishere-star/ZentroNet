@@ -1,6 +1,5 @@
 """Dashboard views for admin panel."""
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, authenticate, login
 from django.http import JsonResponse
 from django.db.models import Q
@@ -10,56 +9,12 @@ from .forms import ContactForm
 
 
 def admin_login(request):
-    """Admin login view - dedicated admin login page."""
-    if request.user.is_authenticated and request.user.is_staff:
-        return redirect('home:dashboard')
-    
-    error = None
-    success = None
-    
-    if request.method == 'POST':
-        username = request.POST.get('username', '').strip()
-        password = request.POST.get('password', '').strip()
-        remember_me = request.POST.get('remember_me')
-        
-        if not username or not password:
-            error = 'Please enter both username and password.'
-        else:
-            # Try authenticate with username first
-            user = authenticate(request, username=username, password=password)
-            
-            # If not found, try with email
-            if user is None:
-                try:
-                    user_obj = User.objects.get(email=username)
-                    user = authenticate(request, username=user_obj.username, password=password)
-                except User.DoesNotExist:
-                    user = None
-            
-            if user is not None:
-                if not user.is_staff:
-                    error = 'Access denied. Admin privileges required.'
-                else:
-                    login(request, user)
-                    if remember_me:
-                        request.session.set_expiry(1209600)  # 2 weeks
-                    return redirect('home:dashboard')
-            else:
-                error = 'Invalid username/email or password.'
-    
-    context = {
-        'error': error,
-        'success': success,
-    }
-    return render(request, 'admin_login.html', context)
+    """Admin login view - redirects to dashboard directly."""
+    return redirect('home:dashboard')
 
 
-@login_required(login_url='home:login')
 def dashboard(request):
     """Main dashboard view."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     # Get statistics
     total_messages = ContactMessage.objects.count()
     unread_messages = ContactMessage.objects.filter(is_read=False).count()
@@ -85,12 +40,8 @@ def dashboard(request):
     return render(request, 'dashboard/dashboard.html', context)
 
 
-@login_required(login_url='home:login')
 def messages(request):
     """Messages/Contacts management view."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     # Get all messages
     all_messages = ContactMessage.objects.all().order_by('-created_at')
     
@@ -121,12 +72,8 @@ def messages(request):
     return render(request, 'dashboard/messages.html', context)
 
 
-@login_required(login_url='home:login')
 def message_detail(request, pk):
     """View single message."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     message = get_object_or_404(ContactMessage, pk=pk)
     message.is_read = True
     message.save()
@@ -140,12 +87,8 @@ def message_detail(request, pk):
     return render(request, 'dashboard/message_detail.html', context)
 
 
-@login_required(login_url='home:login')
 def mark_replied(request, pk):
     """Mark message as replied."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     message = get_object_or_404(ContactMessage, pk=pk)
     message.is_replied = True
     message.save()
@@ -153,24 +96,16 @@ def mark_replied(request, pk):
     return redirect('home:dashboard_messages')
 
 
-@login_required(login_url='home:login')
 def delete_message(request, pk):
     """Delete a message."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     message = get_object_or_404(ContactMessage, pk=pk)
     message.delete()
     
     return redirect('home:dashboard_messages')
 
 
-@login_required(login_url='home:login')
 def team_management(request):
     """Team members management view."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     team_members = TeamMember.objects.all().order_by('order', 'name')
     
     search = request.GET.get('search', '')
@@ -188,12 +123,8 @@ def team_management(request):
     return render(request, 'dashboard/team_management.html', context)
 
 
-@login_required(login_url='home:login')
 def add_team_member(request):
     """Add new team member."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     if request.method == 'POST':
         try:
             team = TeamMember()
@@ -220,12 +151,8 @@ def add_team_member(request):
     return render(request, 'dashboard/add_team_member.html', context)
 
 
-@login_required(login_url='home:login')
 def edit_team_member(request, pk):
     """Edit team member."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     team = get_object_or_404(TeamMember, pk=pk)
     
     if request.method == 'POST':
@@ -249,23 +176,15 @@ def edit_team_member(request, pk):
     return render(request, 'dashboard/edit_team_member.html', context)
 
 
-@login_required(login_url='home:login')
 def delete_team_member(request, pk):
     """Delete team member."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     team = get_object_or_404(TeamMember, pk=pk)
     team.delete()
     return redirect('home:dashboard_team')
 
 
-@login_required(login_url='home:login')
 def projects_management(request):
     """Projects management view."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     projects = Project.objects.all().order_by('-featured', 'order')
     
     # Filter by status
@@ -288,12 +207,8 @@ def projects_management(request):
     return render(request, 'dashboard/projects_management.html', context)
 
 
-@login_required(login_url='home:login')
 def add_project(request):
     """Add new project."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     if request.method == 'POST':
         try:
             from django.utils.text import slugify
@@ -323,12 +238,8 @@ def add_project(request):
     return render(request, 'dashboard/add_project.html', context)
 
 
-@login_required(login_url='home:login')
 def edit_project(request, pk):
     """Edit project."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     project = get_object_or_404(Project, pk=pk)
     
     if request.method == 'POST':
@@ -352,23 +263,15 @@ def edit_project(request, pk):
     return render(request, 'dashboard/edit_project.html', context)
 
 
-@login_required(login_url='home:login')
 def delete_project(request, pk):
     """Delete project."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     project = get_object_or_404(Project, pk=pk)
     project.delete()
     return redirect('home:dashboard_projects')
 
 
-@login_required(login_url='home:login')
 def subscribers(request):
     """Newsletter subscribers view."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     subscribers_list = Newsletter.objects.filter(subscribed=True).order_by('-created_at')
     
     search = request.GET.get('search', '')
@@ -383,12 +286,8 @@ def subscribers(request):
     return render(request, 'dashboard/subscribers.html', context)
 
 
-@login_required(login_url='home:login')
 def dashboard_settings(request):
     """Dashboard settings view."""
-    if not request.user.is_staff:
-        return redirect('home:home')
-    
     user = request.user
     
     if request.method == 'POST':
@@ -403,7 +302,6 @@ def dashboard_settings(request):
     return render(request, 'dashboard/settings.html', context)
 
 
-@login_required(login_url='home:login')
 def dashboard_logout(request):
     """Logout from dashboard."""
     logout(request)
