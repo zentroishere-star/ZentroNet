@@ -12,6 +12,7 @@ class TeamMemberAdmin(admin.ModelAdmin):
     search_fields = ['name', 'email']
     list_filter = ['role']
     ordering = ['order', 'name']
+    exclude = ['twitter']
 
 
 @admin.register(Project)
