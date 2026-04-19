@@ -1,0 +1,139 @@
+/* CardSwap Component Styling - Zentro Design System */
+
+.card-swap-container {
+  position: absolute;
+  top: 75px;
+  right: 0;
+  transform: translate(30%, 0%);
+  transform-origin: top right;
+  perspective: 900px;
+  overflow: visible;
+}
+
+.card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 12px;
+  border: 1px solid rgba(139, 92, 246, 0.5);
+  background: rgba(30, 41, 59, 0.8);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card:hover {
+  border-color: #A78BFA;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+}
+
+.card h3 {
+  font-size: 1.75rem;
+  color: #A78BFA;
+  margin-bottom: 15px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  text-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
+}
+
+.card p {
+  color: #CBD5E1;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 300px;
+}
+
+.card-icon {
+  font-size: 3rem;
+  color: #C4B5FD;
+  margin-bottom: 20px;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-shadow: 0 0 15px rgba(167, 139, 250, 0.3);
+}
+
+.card:hover .card-icon {
+  transform: scale(1.1) rotate(5deg);
+  color: #A78BFA;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .card-swap-container {
+    transform: scale(0.85) translate(5%, 20%);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-swap-container {
+    transform: scale(0.75) translate(25%, 25%);
+    bottom: -50px;
+  }
+
+  .card {
+    padding: 30px 20px;
+  }
+
+  .card h3 {
+    font-size: 1.5rem;
+  }
+
+  .card p {
+    font-size: 0.9rem;
+  }
+
+  .card-icon {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card-swap-container {
+    transform: scale(0.55) translate(25%, 25%);
+    bottom: -80px;
+  }
+
+  .card {
+    padding: 25px 15px;
+  }
+
+  .card h3 {
+    font-size: 1.25rem;
+  }
+
+  .card p {
+    font-size: 0.85rem;
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+}
+
+/* Animation for new cards appearing */
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.card {
+  animation: cardFadeIn 0.3s ease-out;
+}

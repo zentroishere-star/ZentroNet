@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About Us - Zentro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/CardSwap.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- PAGE HEADER -->
+<section class="hero" style="min-height: 50vh; padding-top: 40px;">
+    <div class="hero-content">
+        <h1>About Zentro</h1>
+        <p>Pioneering digital innovation since day one</p>
+    </div>
+</section>
+
+<!-- ABOUT CONTENT -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-2" style="align-items: center; gap: 60px;">
+            <div>
+                {% if about_content %}
+                <h2>{{ about_content.title }}</h2>
+                <p>{{ about_content.content|linebreaks }}</p>
+                {% else %}
+                <h2>About Our Company</h2>
+                <p>At Zentro, we are a passionate team dedicated to building innovative digital solutions that bring ideas to life. Founded by a group of driven creators, we specialize in full-stack development, academic project support, and business-ready web applications.
+                    Our mission is to empower students, startups, and businesses with high-quality, reliable, and scalable technology solutions. We focus on delivering modern designs, efficient performance, and on-time results—every time.</p>
+                {% endif %}
+                <div style="margin-top: 30px; display: flex; gap: 20px; flex-wrap: wrap;">
+                    <a href="{% url 'home:projects' %}" class="btn btn-primary">View Our Work</a>
+                    <a href="{% url 'home:contact' %}" class="btn btn-secondary">Get In Touch</a>
+                </div>
+            </div>
+            <div style="text-align: center; position: relative; height: 600px; min-height: 500px;">
+                <div class="card-swap-container" id="cardSwapContainer">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <h3>Full-Stack Development</h3>
+                        <p>Building robust, scalable web applications from frontend to backend with cutting-edge technologies.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <h3>Web Design</h3>
+                        <p>Creating beautiful, responsive, and user-focused designs that captivate and convert audiences.</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <h3>Innovation & Growth</h3>
+                        <p>Staying ahead of the curve with latest tech trends and delivering solutions that drive success.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TEAM SECTION -->
+<section class="section" style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.6) 100%);">
+    <div class="container">
+        <div class="section-title">
+            <h2>Our Leadership Team</h2>
+            <p>Meet the experts driving Zentro's vision</p>
+        </div>
+        
+        <div class="grid grid-3">
+            {% for member in team %}
+            <div class="team-member-card">
+                <div class="member-image">
+                    <img src="{{ member.photo.url }}" alt="{{ member.name }}">
+                </div>
+                <h3 class="member-name">{{ member.name }}</h3>
+                <p class="member-role">{{ member.get_role_display }}</p>
+                <p style="margin-bottom: 20px;">{{ member.bio|truncatewords:20 }}</p>
+                <div class="member-socials">
+                    {% if member.twitter %}
+                    <a href="{{ member.twitter }}" class="social-link" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if member.linkedin %}
+                    <a href="{{ member.linkedin }}" class="social-link" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    {% endif %}
+                    {% if member.github %}
+                    <a href="{{ member.github }}" class="social-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="{% static 'js/CardSwap.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize CardSwap component
+        if (document.getElementById('cardSwapContainer')) {
+            const cardSwap = new CardSwap('#cardSwapContainer', {
+                width: 1000,
+                height: 600,
+                cardDistance: 70,
+                verticalDistance: 85,
+                delay: 3000,
+                pauseOnHover: true,
+                skewAmount: 6,
+                easing: 'elastic'
+            });
+        }
+    });
+</script>
+{% endblock %}

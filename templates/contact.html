@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact Us - Zentro{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Contact Info Styling */
+    .contact-info-email a {
+        color: #F1F5F9 !important;
+        background: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%);
+        padding: 8px 12px;
+        border-radius: 6px;
+        display: inline-block;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    
+    .contact-info-email a:hover {
+        background: linear-gradient(135deg, #A78BFA 0%, #22D3EE 100%);
+        color: #F1F5F9 !important;
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+    }
+    
+    .contact-info-phone a {
+        color: #F1F5F9 !important;
+        text-decoration: none;
+    }
+    
+    .contact-info-phone a:hover {
+        color: #A78BFA !important;
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- PAGE HEADER -->
+<section class="hero" style="min-height: 50vh; padding-top: 40px;">
+    <div class="hero-content">
+        <h1>Get In Touch</h1>
+        <p>We'd love to hear from you. Let's start a conversation.</p>
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="section">
+    <div class="container" style="max-width: 1000px;">
+        <div class="grid grid-2" style="gap: 60px;">
+            <!-- Contact Form -->
+            <div>
+                <h2>Send us a Message</h2>
+                <form id="contactForm" method="post" action="{% url 'home:contact' %}" style="margin-top: 30px;">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="id_name">Your Name *</label>
+                        <input type="text" id="id_name" name="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_email">Email Address *</label>
+                        <input type="email" id="id_email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_phone">Phone Number</label>
+                        <input type="tel" id="id_phone" name="phone" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_subject">Project Name *</label>
+                        <input type="text" id="id_subject" name="subject" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_message">Project Content *</label>
+                        <textarea id="id_message" name="message" class="form-control" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+            
+            <!-- Contact Info -->
+            <div>
+                <h2>Contact Information</h2>
+                
+                <div class="card" style="margin-top: 30px;">
+                    <div style="margin-bottom: 30px;">
+                        <h4 style="color: var(--primary-color); margin-bottom: 10px;">
+                            <i class="fas fa-map-marker-alt"></i> Address
+                        </h4>
+                        <p>Tamil Nadu<br>India</p>
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;" class="contact-info-email">
+                        <h4 style="color: var(--primary-color); margin-bottom: 10px;">
+                            <i class="fas fa-envelope"></i> Email
+                        </h4>
+                        <p>
+                            <a href="mailto:zentroishere@gmail.com">zentroishere@gmail.com</a><br>
+                            
+                        </p>
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;" class="contact-info-phone">
+                        <h4 style="color: var(--primary-color); margin-bottom: 10px;">
+                            <i class="fas fa-phone"></i> Phone
+                        </h4>
+                        <p>
+                            <a href="tel:+918248545755">+91 8248545755</a>
+                            <br>
+                             <a href="tel:+918015649044">+91 8015649044</a>
+
+                        </p>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: var(--primary-color); margin-bottom: 10px;">
+                            <i class="fas fa-clock"></i> Business Hours
+                        </h4>
+                        <p>
+                            Monday to Friday: 9:00 AM - 6:00 PM<br>
+                            Saturday: 10:00 AM - 4:00 PM<br>
+                            Sunday: Closed
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Social Links -->
+                <div style="margin-top: 30px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 15px;">Follow Us</h4>
+                    <div style="display: flex; gap: 15px;">
+                        <a href="#" class="social-link" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.linkedin.com/in/gokul-a-935a54295?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" class="social-link" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/zentroishere-star" class="social-link" target="_blank"><i class="fab fa-github"></i></a>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="section" style="background: linear-gradient(135deg, #0F172A 0%, rgba(30, 41, 59, 0.8) 100%);">
+    <div class="container">
+        <div class="section-title">
+            <h2 style="color: #F1F5F9;">Frequently Asked Questions</h2>
+        </div>
+        
+        <div style="max-width: 800px; margin: 0 auto;">
+            <div class="card" style="margin-bottom: 20px; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);">
+                <h4 style="color: #A78BFA; margin-bottom: 10px; font-weight: 700;">How long does project implementation typically take?</h4>
+                <p style="color: #CBD5E1;">Project timelines vary based on complexity. We typically provide estimates during our initial consultation.</p>
+            </div>
+            
+            <div class="card" style="margin-bottom: 20px; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);">
+                <h4 style="color: #A78BFA; margin-bottom: 10px; font-weight: 700;">Do you offer post-launch support?</h4>
+                <p style="color: #CBD5E1;">Yes, we provide comprehensive support and maintenance packages for all our projects.</p>
+            </div>
+            
+            <div class="card" style="margin-bottom: 20px; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(139, 92, 246, 0.3); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);">
+                <h4 style="color: #A78BFA; margin-bottom: 10px; font-weight: 700;">What's your typical response time?</h4>
+                <p style="color: #CBD5E1;">We aim to respond to all inquiries within 24 hours during business days.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

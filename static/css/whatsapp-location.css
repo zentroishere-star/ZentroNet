@@ -1,0 +1,612 @@
+/**
+ * WhatsApp Location-Based Floating Chat Widget
+ * With Indian States and Districts
+ * Professional, responsive, accessible
+ */
+
+:root {
+    /* Colors */
+    --wa-primary: #25D366;           /* WhatsApp green */
+    --wa-primary-dark: #128C7E;      /* Darker green */
+    --wa-primary-light: #e8f5e9;     /* Light green bg */
+    --wa-accent: #0f3d2a;            /* Dark accent */
+    --wa-text: #333333;              /* Text color */
+    --wa-text-light: #666666;        /* Light text */
+    --wa-border: #e0e0e0;            /* Border color */
+    --wa-white: #ffffff;             /* White */
+    --wa-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --wa-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.2);
+    
+    /* Transitions */
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ========================================
+   FLOATING BUTTON
+   ======================================== */
+
+.whatsapp-location-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--wa-primary), var(--wa-primary-dark));
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: var(--wa-white);
+    box-shadow: var(--wa-shadow);
+    transition: var(--transition);
+    z-index: 9998;
+    animation: fadeInButton 0.5s ease-out 0.5s both;
+}
+
+.whatsapp-location-button:hover {
+    transform: scale(1.1);
+    box-shadow: var(--wa-shadow-hover);
+}
+
+.whatsapp-location-button:active {
+    transform: scale(0.95);
+}
+
+.whatsapp-location-button::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--wa-primary);
+    animation: pulse 2s infinite;
+    pointer-events: none;
+}
+
+/* Tooltip */
+.whatsapp-location-button::after {
+    content: "Chat with us 👋";
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    background: var(--wa-text);
+    color: var(--wa-white);
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    font-weight: 500;
+}
+
+.whatsapp-location-button:hover::after {
+    opacity: 1;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@keyframes fadeInButton {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInPanel {
+    from {
+        transform: translateX(420px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutPanel {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(420px);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========================================
+   OVERLAY
+   ======================================== */
+
+.whatsapp-location-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9997;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.whatsapp-location-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+    animation: fadeInOverlay 0.3s ease-out;
+}
+
+/* ========================================
+   CHAT PANEL
+   ======================================== */
+
+.whatsapp-location-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 420px;
+    height: 100vh;
+    background: var(--wa-white);
+    box-shadow: -4px 0 16px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(420px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.whatsapp-location-panel.active {
+    transform: translateX(0);
+    animation: slideInPanel 0.3s ease-out;
+}
+
+/* ========================================
+   PANEL HEADER
+   ======================================== */
+
+.whatsapp-location-header {
+    background: linear-gradient(135deg, var(--wa-primary), var(--wa-primary-dark));
+    color: var(--wa-white);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.whatsapp-location-header-title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.whatsapp-location-header-title h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.whatsapp-location-header-title p {
+    margin: 0;
+    font-size: 13px;
+    opacity: 0.95;
+}
+
+.whatsapp-location-close {
+    background: none;
+    border: none;
+    color: var(--wa-white);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--transition);
+}
+
+.whatsapp-location-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================
+   PANEL BODY
+   ======================================== */
+
+.whatsapp-location-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Info Box */
+.whatsapp-location-info {
+    background: linear-gradient(135deg, rgba(37, 211, 102, 0.1), rgba(18, 140, 126, 0.1));
+    border-left: 4px solid var(--wa-primary);
+    padding: 16px 20px;
+    margin: 16px 16px 0 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--wa-text);
+    animation: fadeInUp 0.5s ease-out 0.2s both;
+}
+
+.whatsapp-location-info strong {
+    display: block;
+    color: var(--wa-primary-dark);
+    margin-bottom: 4px;
+}
+
+/* Form Container */
+.whatsapp-location-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 16px;
+}
+
+/* Form Group */
+.whatsapp-location-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    animation: fadeInUp 0.5s ease-out both;
+}
+
+.whatsapp-location-form-group:nth-child(1) {
+    animation-delay: 0.3s;
+}
+
+.whatsapp-location-form-group:nth-child(2) {
+    animation-delay: 0.4s;
+}
+
+.whatsapp-location-form-group:nth-child(3) {
+    animation-delay: 0.5s;
+}
+
+.whatsapp-location-form-group label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--wa-text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.whatsapp-location-form-group label .required {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
+/* Select Dropdown */
+.whatsapp-location-select {
+    padding: 12px 14px;
+    border: 2px solid var(--wa-border);
+    border-radius: 8px;
+    font-size: 14px;
+    color: var(--wa-text);
+    background-color: var(--wa-white);
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: inherit;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    padding-right: 40px;
+}
+
+.whatsapp-location-select:hover {
+    border-color: var(--wa-primary);
+}
+
+.whatsapp-location-select:focus {
+    outline: none;
+    border-color: var(--wa-primary);
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+}
+
+.whatsapp-location-select:disabled {
+    background-color: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+/* ========================================
+   BUTTON SECTION
+   ======================================== */
+
+.whatsapp-location-button-section {
+    padding: 16px 20px;
+    border-top: 1px solid var(--wa-border);
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+    animation: fadeInUp 0.5s ease-out 0.6s both;
+}
+
+/* Start Chat Button */
+.whatsapp-location-start-btn {
+    flex: 1;
+    padding: 14px 20px;
+    background: linear-gradient(135deg, var(--wa-primary), var(--wa-primary-dark));
+    color: var(--wa-white);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.whatsapp-location-start-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--wa-shadow-hover);
+}
+
+.whatsapp-location-start-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.whatsapp-location-start-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.whatsapp-location-start-btn i {
+    font-size: 18px;
+}
+
+/* Status Indicator */
+.whatsapp-location-status {
+    font-size: 12px;
+    color: var(--wa-text-light);
+    text-align: center;
+    padding-top: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.whatsapp-location-status .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--wa-primary);
+    animation: pulse 2s infinite;
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+.whatsapp-location-loading {
+    position: relative;
+}
+
+.whatsapp-location-loading::after {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--wa-white);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+/* ========================================
+   NOTIFICATION
+   ======================================== */
+
+.whatsapp-location-notification {
+    position: fixed;
+    bottom: 100px;
+    right: 30px;
+    background: var(--wa-text);
+    color: var(--wa-white);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+    animation: slideInUp 0.3s ease-out;
+    box-shadow: var(--wa-shadow);
+}
+
+.whatsapp-location-notification.success {
+    background: #27ae60;
+}
+
+.whatsapp-location-notification.error {
+    background: #e74c3c;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    .whatsapp-location-panel {
+        width: 100%;
+        transform: translateX(100%);
+    }
+
+    .whatsapp-location-panel.active {
+        animation: none;
+    }
+
+    .whatsapp-location-button {
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+        font-size: 28px;
+    }
+
+    .whatsapp-location-notification {
+        right: 20px;
+        bottom: 90px;
+    }
+}
+
+@media (max-width: 480px) {
+    .whatsapp-location-panel {
+        width: 100%;
+    }
+
+    .whatsapp-location-header-title h3 {
+        font-size: 16px;
+    }
+
+    .whatsapp-location-header-title p {
+        font-size: 12px;
+    }
+
+    .whatsapp-location-form {
+        padding: 16px;
+        gap: 14px;
+    }
+
+    .whatsapp-location-button-section {
+        padding: 12px 16px;
+    }
+
+    .whatsapp-location-start-btn {
+        padding: 12px 16px;
+        font-size: 15px;
+    }
+
+    .whatsapp-location-button {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        bottom: 16px;
+        right: 16px;
+    }
+
+    .whatsapp-location-button::after {
+        font-size: 12px;
+    }
+
+    .whatsapp-location-info {
+        font-size: 13px;
+        margin: 12px 12px 0 12px;
+    }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* Focus visible for keyboard navigation */
+.whatsapp-location-select:focus-visible,
+.whatsapp-location-start-btn:focus-visible,
+.whatsapp-location-close:focus-visible {
+    outline: 2px solid var(--wa-primary);
+    outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .whatsapp-location-button::before {
+        animation: none;
+    }
+
+    .whatsapp-location-panel {
+        transition: none;
+    }
+}
+
+/* High contrast support */
+@media (prefers-contrast: more) {
+    .whatsapp-location-select {
+        border-width: 3px;
+    }
+
+    .whatsapp-location-start-btn {
+        border: 2px solid transparent;
+    }
+}

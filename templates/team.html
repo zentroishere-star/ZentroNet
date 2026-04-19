@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Team - Zentro{% endblock %}
+
+{% block content %}
+<!-- PAGE HEADER -->
+<section class="hero" style="min-height: 50vh; padding-top: 40px;">
+    <div class="hero-content">
+        <h1>Our Team</h1>
+        <p>Meet the talented professionals behind Zentro</p>
+    </div>
+</section>
+
+<!-- TEAM MEMBERS -->
+<section class="section">
+    <div class="container">
+        <div class="grid grid-3">
+            {% for member in team|slice:":3" %}
+            <div class="team-member-card">
+                <div class="member-image">
+                    <img src="{{ member.photo.url }}" alt="{{ member.name }}">
+                </div>
+                <h3 class="member-name">{{ member.name }}</h3>
+                <p class="member-role">{{ member.get_role_display }}</p>
+                <p style="margin-bottom: 20px;">{{ member.bio }}</p>
+                <div style="margin-bottom: 15px;">
+                    <small style="color: var(--text-secondary);"><i class="fas fa-envelope"></i> {{ member.email }}</small>
+                </div>
+                <div class="member-socials">
+                    {% if member.twitter %}
+                    <a href="{{ member.twitter }}" class="social-link" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if member.linkedin %}
+                    <a href="{{ member.linkedin }}" class="social-link" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    {% endif %}
+                    {% if member.github %}
+                    <a href="{{ member.github }}" class="social-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- View More Button -->
+        {% if team|length > 3 %}
+        <div style="text-align: center; margin-top: 50px; margin-bottom: 50px;">
+            <button class="view-more-btn" id="viewMoreBtn" onclick="toggleTeamMembers()">
+                <span class="view-more-text">View More</span>
+              
+            </button>
+        </div>
+
+        <!-- Hidden Additional Members -->
+        <div id="additionalMembers" style="display: none;">
+            <div class="grid grid-3">
+                {% for member in team|slice:"3:" %}
+                <div class="team-member-card">
+                    <div class="member-image">
+                        <img src="{{ member.photo.url }}" alt="{{ member.name }}">
+                    </div>
+                    <h3 class="member-name">{{ member.name }}</h3>
+                    <p class="member-role">{{ member.get_role_display }}</p>
+                    <p style="margin-bottom: 20px;">{{ member.bio }}</p>
+                    <div style="margin-bottom: 15px;">
+                        <small style="color: var(--text-secondary);"><i class="fas fa-envelope"></i> {{ member.email }}</small>
+                    </div>
+                    <div class="member-socials">
+                        {% if member.twitter %}
+                        <a href="{{ member.twitter }}" class="social-link" target="_blank">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.linkedin %}
+                        <a href="{{ member.linkedin }}" class="social-link" target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        {% endif %}
+                        {% if member.github %}
+                        <a href="{{ member.github }}" class="social-link" target="_blank">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- View Less Button (Hidden Initially) -->
+        <div id="viewLessContainer" style="text-align: center; margin-top: 50px; margin-bottom: 50px; display: none;">
+            <button class="view-more-btn" onclick="toggleTeamMembers()">
+                <span class="view-more-text">View Less</span>
+                <span class="view-more-arrow" style="transform: rotate(180deg);"></span>
+            </button>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- TEAM CULTURE -->
+<section class="section" style="background: linear-gradient(135deg, #0F172A 0%, rgba(30, 41, 59, 0.8) 100%); padding: 80px 0;">
+    <div class="container">
+        <div class="section-title">
+            <h2 style="background: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent;">Why Join Our Team?</h2>
+        </div>
+        
+        <div class="grid grid-3">
+            <div class="card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%); border: 1px solid rgba(139, 92, 246, 0.3); backdrop-filter: blur(10px);">
+                <div class="card-icon"><i class="fas fa-rocket"></i></div>
+                <h4 class="card-title" style="color: var(--text-primary);">Growth Opportunities</h4>
+                <p class="card-text" style="color: var(--text-secondary);">Career development and continuous learning are core to our culture.</p>
+            </div>
+            <div class="card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%); border: 1px solid rgba(139, 92, 246, 0.3); backdrop-filter: blur(10px);">
+                <div class="card-icon"><i class="fas fa-users"></i></div>
+                <h4 class="card-title" style="color: var(--text-primary);">Collaborative Culture</h4>
+                <p class="card-text" style="color: var(--text-secondary);">Work with brilliant minds in a supportive and inclusive environment.</p>
+            </div>
+            <div class="card" style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(6, 182, 212, 0.1) 100%); border: 1px solid rgba(139, 92, 246, 0.3); backdrop-filter: blur(10px);">
+                <div class="card-icon"><i class="fas fa-award"></i></div>
+                <h4 class="card-title" style="color: var(--text-primary);">Great Benefits</h4>
+                <p class="card-text" style="color: var(--text-secondary);">Competitive compensation and comprehensive benefits package.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JOIN US CTA -->
+<section class="section" style="background: linear-gradient(135deg, rgba(244, 196, 48, 0.1) 0%, rgba(184, 134, 11, 0.05) 100%);">
+    <div class="container">
+        <div style="text-align: center;">
+            <h2 style="margin-bottom: 20px;">Interested in Joining Zentro?</h2>
+            <p style="margin-bottom: 30px; font-size: 1.1rem;">We're always looking for talented individuals to join our team</p>
+            <a href="{% url 'home:contact' %}" class="btn btn-primary">Get In Touch</a>
+        </div>
+    </div>
+</section>
+
+<style>
+    .view-more-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 14px 40px;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(15, 118, 110, 0.3);
+    }
+
+    .view-more-btn:hover {
+        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+        box-shadow: 0 8px 25px rgba(15, 118, 110, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .view-more-btn:active {
+        transform: translateY(0);
+        box-shadow: 0 4px 15px rgba(15, 118, 110, 0.3);
+    }
+
+    .view-more-arrow {
+        display: inline-block;
+        font-size: 1.2rem;
+        transition: transform 0.3s ease;
+    }
+
+    #additionalMembers {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    function toggleTeamMembers() {
+        const additionalMembers = document.getElementById('additionalMembers');
+        const viewMoreBtn = document.getElementById('viewMoreBtn');
+        const viewLessContainer = document.getElementById('viewLessContainer');
+        
+        if (additionalMembers.style.display === 'none') {
+            // Show more members
+            additionalMembers.style.display = 'block';
+            if (viewMoreBtn) viewMoreBtn.style.display = 'none';
+            if (viewLessContainer) viewLessContainer.style.display = 'block';
+        } else {
+            // Hide more members
+            additionalMembers.style.display = 'none';
+            if (viewMoreBtn) viewMoreBtn.style.display = 'inline-flex';
+            if (viewLessContainer) viewLessContainer.style.display = 'none';
+            // Scroll back to top of team section
+            document.querySelector('.section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+</script>
+{% endblock %}

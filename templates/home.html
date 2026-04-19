@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - Zentro{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/HeroUnique.css' %}">
+<link rel="stylesheet" href="{% static 'css/ProjectsUnique.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- UNIQUE MODERN HERO SECTION -->
+<section class="hero-unique">
+    <div class="hero-unique-content">
+        <!-- Left Column - Text Content -->
+        <div class="hero-text-column">
+            <div class="tagline">Welcome to Zentro</div>
+            <h1>Elevate Your Business with Advanced Tech Solutions</h1>
+       
+            
+            <div class="hero-cta-group">
+                <a href="{% url 'home:projects' %}" class="btn btn-hero-primary">Explore Our Work</a>
+                <a href="{% url 'home:contact' %}" class="btn btn-hero-secondary">Schedule a Call</a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">150+</div>
+                    <div class="stat-label">Projects Delivered</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Client Satisfaction</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Team Members</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section class="features section">
+    <div class="container">
+        <div class="section-title">
+            <h2>Why Choose Zentro?</h2>
+            <p>Industry-leading solutions tailored to your needs</p>
+        </div>
+        
+        <div class="grid grid-3">
+            {% for service in services %}
+            <div class="card">
+                <div class="card-icon">
+                    <i class="{{ service.icon }}"></i>
+                </div>
+                <h4 class="card-title">{{ service.title }}</h4>
+                <p class="card-text">{{ service.description }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED PROJECTS SECTION -->
+<section class="projects-unique section">
+    <div class="container">
+        <div class="projects-unique-content">
+            <!-- Section Title -->
+            <div class="projects-section-title">
+                <h2>Featured Projects</h2>
+                <p>Showcasing our latest work and accomplishments</p>
+            </div>
+
+            <!-- Projects Grid -->
+            {% if featured_projects %}
+            <div class="projects-grid">
+                {% for project in featured_projects %}
+                <div class="project-card-unique">
+                    <!-- Project Image -->
+                    <div class="project-image-container">
+                        {% if project.image %}
+                        <img src="{{ project.image.url }}" alt="{{ project.title }}" class="project-image">
+                        {% else %}
+                        <div class="project-image-placeholder" style="width: 100%; height: 100%; background: linear-gradient(135deg, #8B5CF6 0%, #06B6D4 100%); display: flex; align-items: center; justify-content: center; color: #fff;"><i class="fas fa-image" style="font-size: 48px;"></i></div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Project Info -->
+                    <div class="project-info-unique">
+                        <!-- Status Badge -->
+                        <span class="project-status-badge">{{ project.get_status_display }}</span>
+
+                        <!-- Title -->
+                        <h3 class="project-title-unique">{{ project.title }}</h3>
+
+                        <!-- Description -->
+                        <p class="project-description-unique">{{ project.description|truncatewords:18 }}</p>
+
+                        <!-- Tags (optional) -->
+                        <div class="project-tags">
+                            <span class="project-tag">Web Design</span>
+                            <span class="project-tag">Development</span>
+                        </div>
+
+                        <!-- View Project Link -->
+                        <a href="{% url 'home:project_detail' project.slug %}" class="project-link-btn">
+                            View Project <i class="fas fa-arrow-right" style="margin-left: 8px;"></i>
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- View All Projects Section -->
+            <div class="projects-view-all-section">
+                <a href="{% url 'home:projects' %}" class="btn-view-all-projects">
+                    Explore All Projects →
+                </a>
+            </div>
+            {% else %}
+            <!-- No Projects Message -->
+            <div class="no-projects-message">
+                <i class="fas fa-folder-open"></i>
+                <h3>No Projects Yet</h3>
+                <p>Check back soon for our latest work!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- TEAM SECTION -->
+<section class="team section" style="background: #ffffff(26, 26, 26, 0.5);">
+    <div class="container">
+        <div class="section-title">
+            <h2>Meet Our Team</h2>
+            <p>Talented professionals dedicated to your success</p>
+        </div>
+        
+        <div class="grid grid-4">
+            {% for member in team %}
+            <div class="team-member-card">
+                <div class="member-image">
+                    <img src="{{ member.photo.url }}" alt="{{ member.name }}">
+                </div>
+                <h3 class="member-name">{{ member.name }}</h3>
+                <p class="member-role">{{ member.get_role_display }}</p>
+                <div class="member-socials">
+                    {% if member.twitter %}
+                    <a href="{{ member.twitter }}" class="social-link" target="_blank">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if member.linkedin %}
+                    <a href="{{ member.linkedin }}" class="social-link" target="_blank">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    {% endif %}
+                    {% if member.github %}
+                    <a href="{{ member.github }}" class="social-link" target="_blank">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="{% url 'home:team' %}" class="btn btn-primary">View Full Team</a>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS SECTION -->
+<section class="testimonials section">
+    <div class="container">
+        <div class="section-title">
+            <h2>What Our Clients Say</h2>
+            <p>Trusted by industry leaders worldwide</p>
+        </div>
+        
+        <div class="grid grid-3">
+            {% for testimonial in testimonials %}
+            <div class="testimonial-card">
+                <div class="star-rating">
+                    {% for i in "12345" %}
+                        {% if i|add:"0" <= testimonial.rating %}
+                        <i class="fas fa-star"></i>
+                        {% else %}
+                        <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <p>{{ testimonial.content }}</p>
+                <div class="testimonial-author">
+                    {% if testimonial.image %}
+                    <img src="{{ testimonial.image.url }}" alt="{{ testimonial.author }}" class="author-avatar">
+                    {% else %}
+                    <div class="author-avatar" style="background: var(--primary-color); display: flex; align-items: center; justify-content: center; color: var(--bg-dark); font-weight: bold;">
+                        {{ testimonial.author|slice:":1" }}
+                    </div>
+                    {% endif %}
+                    <div class="author-info">
+                        <div class="author-name">{{ testimonial.author }}</div>
+                        {% if testimonial.company %}
+                        <div class="author-company">{{ testimonial.company }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA SECTION -->
+<section class="cta section" style="background: linear-gradient(135deg, rgba(244, 196, 48, 0.1) 0%, rgba(184, 134, 11, 0.05) 100%);">
+    <div class="container">
+        <div style="text-align: center;">
+            <h2 style="margin-bottom: 20px;">Ready to Start Your Project?</h2>
+            <p style="margin-bottom: 30px; font-size: 1.1rem;">Let's work together to bring your vision to life</p>
+            <a href="{% url 'home:contact' %}" class="btn btn-primary">Contact Us Today</a>
+        </div>
+    </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="{% static 'js/DarkVeil.js' %}"></script>
+{% endblock %}

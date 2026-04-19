@@ -1,0 +1,350 @@
+/* WhatsApp Chat Widget Styles */
+
+:root {
+    --wa-primary: #25D366;
+    --wa-secondary: #1f8857;
+    --wa-dark: #0f3d2a;
+    --wa-light: #e8f5e9;
+}
+
+/* WhatsApp Float Button */
+.whatsapp-float-button {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 70px;
+    height: 70px;
+    background-color: var(--wa-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 998;
+    transition: all 0.3s ease;
+    animation: pulse 2s infinite;
+}
+
+.whatsapp-float-button:hover {
+    background-color: var(--wa-secondary);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-float-button i {
+    font-size: 40px;
+    color: white;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+    }
+    100% {
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+    }
+}
+
+/* WhatsApp Modal Dialog */
+.whatsapp-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+}
+
+.whatsapp-modal-overlay.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.whatsapp-modal {
+    background: white;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* WhatsApp Modal Header */
+.whatsapp-modal-header {
+    background: linear-gradient(135deg, var(--wa-primary) 0%, var(--wa-secondary) 100%);
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.whatsapp-modal-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.whatsapp-modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease;
+}
+
+.whatsapp-modal-close:hover {
+    transform: scale(1.1);
+}
+
+/* WhatsApp Modal Body */
+.whatsapp-modal-body {
+    padding: 25px;
+}
+
+.whatsapp-info-section {
+    background: var(--wa-light);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--wa-primary);
+}
+
+.whatsapp-info-section p {
+    margin: 0;
+    color: #333;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* WhatsApp Form */
+.whatsapp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.whatsapp-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.whatsapp-form-group label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.whatsapp-form-group select,
+.whatsapp-form-group input[type="text"],
+.whatsapp-form-group input[type="email"],
+.whatsapp-form-group textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.whatsapp-form-group select:focus,
+.whatsapp-form-group input:focus,
+.whatsapp-form-group textarea:focus {
+    outline: none;
+    border-color: var(--wa-primary);
+    box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.1);
+}
+
+.whatsapp-form-group textarea {
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+}
+
+/* WhatsApp Button */
+.whatsapp-btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.whatsapp-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.whatsapp-btn-primary {
+    background-color: var(--wa-primary);
+    color: white;
+}
+
+.whatsapp-btn-primary:hover {
+    background-color: var(--wa-secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-btn-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.whatsapp-btn-secondary:hover {
+    background-color: #e8e8e8;
+}
+
+/* WhatsApp Services */
+.whatsapp-services-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.whatsapp-services-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.whatsapp-services-list li:before {
+    content: "✓";
+    color: var(--wa-primary);
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.whatsapp-services-list li:last-child {
+    border-bottom: none;
+}
+
+/* WhatsApp Status Indicator */
+.whatsapp-status {
+    font-size: 12px;
+    color: #666;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+.whatsapp-status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: var(--wa-primary);
+    border-radius: 50%;
+    margin-right: 5px;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .whatsapp-float-button {
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+    }
+
+    .whatsapp-float-button i {
+        font-size: 32px;
+    }
+
+    .whatsapp-modal {
+        width: 95%;
+        max-width: 400px;
+    }
+
+    .whatsapp-modal-body {
+        padding: 20px;
+    }
+
+    .whatsapp-btn-group {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    .whatsapp-float-button {
+        bottom: 15px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
+    }
+
+    .whatsapp-modal {
+        width: 98%;
+    }
+
+    .whatsapp-modal-header h3 {
+        font-size: 18px;
+    }
+
+    .whatsapp-modal-body {
+        padding: 15px;
+    }
+}

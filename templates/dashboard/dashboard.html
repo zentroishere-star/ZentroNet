@@ -1,0 +1,155 @@
+{% extends 'dashboard_base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Zentro Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        padding-top: 70px;
+    }
+    
+    .dashboard-container {
+        display: flex;
+        min-height: calc(100vh - 70px);
+        background: #f5f7fa;
+    }
+    
+    .dashboard-sidebar {
+        width: 260px;
+        background: #0F766E;
+        color: white;
+        padding: 30px 0;
+        position: fixed;
+        height: calc(100vh - 70px);
+        overflow-y: auto;
+        left: 0;
+        top: 70px;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+    }
+    
+    .dashboard-content {
+        margin-left: 260px;
+        flex: 1;
+        padding: 40px;
+        width: calc(100% - 260px);
+    }
+    
+    @media (max-width: 768px) {
+        body {
+            padding-top: 70px;
+        }
+        
+        .dashboard-container {
+            flex-direction: column;
+        }
+        
+        .dashboard-sidebar {
+            width: 100%;
+            position: relative;
+            height: auto;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+        
+        .dashboard-content {
+            margin-left: 0;
+            width: 100%;
+            padding: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <nav class="dashboard-sidebar">
+        <h3>Dashboard</h3>
+        <ul>
+            <li><a href="{% url 'home:dashboard' %}" class="{% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{% url 'home:dashboard_messages' %}" class="{% if request.resolver_match.url_name == 'dashboard_messages' %}active{% endif %}"><i class="fas fa-envelope"></i> Messages ({{ unread_count }})</a></li>
+            <li><a href="{% url 'home:dashboard_team' %}" class="{% if request.resolver_match.url_name == 'dashboard_team' %}active{% endif %}"><i class="fas fa-users"></i> Team</a></li>
+            <li><a href="{% url 'home:dashboard_projects' %}" class="{% if request.resolver_match.url_name == 'dashboard_projects' %}active{% endif %}"><i class="fas fa-project-diagram"></i> Projects</a></li>
+            <li><a href="{% url 'home:dashboard_subscribers' %}" class="{% if request.resolver_match.url_name == 'dashboard_subscribers' %}active{% endif %}"><i class="fas fa-bell"></i> Subscribers</a></li>
+            <li><a href="{% url 'home:dashboard_settings' %}" class="{% if request.resolver_match.url_name == 'dashboard_settings' %}active{% endif %}"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+        
+        <div class="dashboard-logout">
+            <ul>
+                <li><a href="{% url 'home:dashboard_logout' %}" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="dashboard-content">
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div>
+                <h1><i class="fas fa-chart-line"></i> Admin Dashboard</h1>
+                <p style="color: #64748b;">Welcome back!</p>
+            </div>
+            <div class="dashboard-user">
+                <p><strong>{{ request.user.get_full_name|default:request.user.username }}</strong></p>
+                <p style="color: #64748b;">Admin Panel</p>
+            </div>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Messages</h3>
+                <div class="stat-number">{{ total_messages }}</div>
+            </div>
+            <div class="stat-card danger">
+                <h3>Unread Messages</h3>
+                <div class="stat-number">{{ unread_messages }}</div>
+            </div>
+            <div class="stat-card accent">
+                <h3>Team Members</h3>
+                <div class="stat-number">{{ total_team }}</div>
+            </div>
+            <div class="stat-card info">
+                <h3>Projects</h3>
+                <div class="stat-number">{{ total_projects }}</div>
+            </div>
+            <div class="stat-card success">
+                <h3>Subscribers</h3>
+                <div class="stat-number">{{ total_subscribers }}</div>
+            </div>
+        </div>
+        
+        <!-- Recent Messages -->
+        <div class="dashboard-card">
+            <h2><i class="fas fa-inbox"></i> Recent Messages</h2>
+            {% if recent_messages %}
+                <ul class="messages-list">
+                    {% for message in recent_messages %}
+                    <li class="message-item {% if not message.is_read %}unread{% endif %}">
+                        <h4>{{ message.name }}</h4>
+                        <p><strong>Subject:</strong> {{ message.subject }}</p>
+                        <p>{{ message.message|truncatewords:15 }}</p>
+                        <div class="message-meta">
+                            <span>{{ message.created_at|date:"M d, Y H:i" }}</span>
+                            <div>
+                                {% if not message.is_read %}<span class="message-badge unread">Unread</span>{% endif %}
+                                {% if message.is_replied %}<span class="message-badge">Replied</span>{% endif %}
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <a href="{% url 'home:dashboard_messages' %}" style="display: inline-block; margin-top: 15px;" class="btn btn-primary">View All Messages</a>
+            {% else %}
+                <p style="color: #64748b; text-align: center; padding: 30px 0;">No messages yet</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
