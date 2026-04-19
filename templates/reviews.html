@@ -26,6 +26,42 @@
             </div>
 
             <div class="form-group">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold;">Category</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <div 
+                        class="category-option" 
+                        data-category="Worker" 
+                        style="padding: 15px; border: 2px solid #ccc; border-radius: 8px; cursor: pointer; transition: all 0.3s; background: transparent;">
+                        <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; color: #fff;">Worker</div>
+                        <div style="font-size: 0.9rem; color: #aaa;">Professional or freelancer</div>
+                    </div>
+                    <div 
+                        class="category-option" 
+                        data-category="Business" 
+                        style="padding: 15px; border: 2px solid #ccc; border-radius: 8px; cursor: pointer; transition: all 0.3s; background: transparent;">
+                        <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; color: #fff;">Business</div>
+                        <div style="font-size: 0.9rem; color: #aaa;">Company or organization</div>
+                    </div>
+                    <div 
+                        class="category-option" 
+                        data-category="Student" 
+                        style="padding: 15px; border: 2px solid #ccc; border-radius: 8px; cursor: pointer; transition: all 0.3s; background: transparent;">
+                        <div style="font-weight: 600; font-size: 1.1rem; margin-bottom: 5px; color: #fff;">Student</div>
+                        <div style="font-size: 0.9rem; color: #aaa;">Student or learner</div>
+                    </div>
+                </div>
+                <input type="hidden" id="category" value="">
+            </div>
+
+            <!-- Conditional Type Selection -->
+            <div id="typeSelectionGroup" class="form-group" style="display: none;">
+                <label id="typeLabel" style="display: block; margin-bottom: 8px; font-weight: bold;">Select Type</label>
+                <select id="typeSelect" class="form-control" style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; background: rgba(26, 26, 26, 0.8); color: #fff; font-size: 1rem;">
+                    <option value="">-- Select Type --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label style="display: block; margin-bottom: 8px; font-weight: bold;">Rating</label>
                 <div class="rating-group" style="display: flex; gap: 10px; align-items: center;">
                     <span class="star" data-rating="1" style="font-size: 2rem; cursor: pointer; color: #ccc; transition: color 0.2s;">★</span>
@@ -54,6 +90,107 @@
 
 <script>
 let currentRating = 0;
+let selectedCategory = "";
+let selectedType = "";
+
+// Type options for each category
+const typeOptions = {
+    Worker: [
+        "Web Developer",
+        "Mobile Developer", 
+        "Python Developer",
+        "Data Scientist",
+        "UI/UX Designer",
+        "Graphic Designer",
+        "Digital Marketer",
+        "Content Writer",
+        "Project Manager",
+        "Cloud Engineer",
+        "AI/ML Developer",
+        "Other"
+    ],
+    Business: [
+        "E-commerce",
+        "SaaS",
+        "Education",
+        "Healthcare",
+        "Finance",
+        "Real Estate",
+        "Retail",
+        "Hospitality",
+        "Technology",
+        "Media & Entertainment",
+        "Manufacturing",
+        "Consulting",
+        "Other"
+    ],
+    Student: [
+        "High School",
+        "Bachelor's",
+        "Master's",
+        "Bootcamp",
+        "Self-Learning",
+        "Other"
+    ]
+};
+
+// Populate type select dropdown
+function populateTypeSelect() {
+    const typeSelect = document.getElementById('typeSelect');
+    const options = typeOptions[selectedCategory] || [];
+    
+    typeSelect.innerHTML = '<option value="">-- Select Type --</option>';
+    options.forEach(option => {
+        const optElement = document.createElement('option');
+        optElement.value = option;
+        optElement.textContent = option;
+        typeSelect.appendChild(optElement);
+    });
+}
+
+// Category selection functionality
+document.querySelectorAll('.category-option').forEach(option => {
+    option.addEventListener('click', function() {
+        selectedCategory = this.dataset.category;
+        selectedType = ""; // Reset type when category changes
+        document.getElementById('category').value = selectedCategory;
+        document.getElementById('typeSelect').value = "";
+        
+        // Update visual selection
+        document.querySelectorAll('.category-option').forEach(opt => {
+            opt.style.borderColor = '#ccc';
+            opt.style.background = 'transparent';
+        });
+        
+        this.style.borderColor = 'var(--primary-color)';
+        this.style.background = 'rgba(244, 196, 48, 0.1)';
+        
+        // Show/hide type selection
+        const typeGroup = document.getElementById('typeSelectionGroup');
+        const typeLabel = document.getElementById('typeLabel');
+        
+        if (selectedCategory === 'Worker') {
+            typeGroup.style.display = 'block';
+            typeLabel.textContent = 'What type of work do you do?';
+            populateTypeSelect();
+        } else if (selectedCategory === 'Business') {
+            typeGroup.style.display = 'block';
+            typeLabel.textContent = 'What type of business are you in?';
+            populateTypeSelect();
+        } else if (selectedCategory === 'Student') {
+            typeGroup.style.display = 'block';
+            typeLabel.textContent = 'What level of study are you at?';
+            populateTypeSelect();
+        } else {
+            typeGroup.style.display = 'none';
+        }
+    });
+});
+
+// Type select change handler
+document.getElementById('typeSelect').addEventListener('change', function() {
+    selectedType = this.value;
+});
 
 // Star rating functionality
 document.querySelectorAll('.star').forEach(star => {
@@ -107,9 +244,21 @@ function addReview() {
         return;
     }
 
+    if(selectedCategory === "") {
+        alert("Please select a category");
+        return;
+    }
+
+    if(selectedType === "") {
+        alert("Please select a type");
+        return;
+    }
+
     const review = {
         id: Date.now(),
         name: name,
+        category: selectedCategory,
+        type: selectedType,
         message: message,
         rating: currentRating,
         date: new Date().toLocaleDateString()
@@ -123,8 +272,20 @@ function addReview() {
     // Clear inputs
     document.getElementById("name").value = "";
     document.getElementById("message").value = "";
+    document.getElementById("typeSelect").value = "";
+    selectedCategory = "";
+    selectedType = "";
     currentRating = 0;
     updateStarDisplay();
+    
+    // Hide type selection
+    document.getElementById('typeSelectionGroup').style.display = 'none';
+    
+    // Reset category selection visuals
+    document.querySelectorAll('.category-option').forEach(opt => {
+        opt.style.borderColor = '#ccc';
+        opt.style.background = 'transparent';
+    });
 
     renderReviews();
 }
@@ -148,11 +309,15 @@ function renderReviews() {
     container.innerHTML = reviews.map(review => `
         <div style="background: rgba(26, 26, 26, 0.5); padding: 25px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
-                <div>
-                    <div style="font-weight: 600; font-size: 1.1rem; color: #fff; margin-bottom: 5px;">${escapeHtml(review.name)}</div>
-                    <div style="color: var(--primary-color); font-size: 1.3rem;">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</div>
+                <div style="width: 100%;">
+                    <div style="font-weight: 600; font-size: 1.1rem; color: #fff; margin-bottom: 8px;">${escapeHtml(review.name)}</div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 8px;">
+                        <span style="display: inline-block; background: rgba(244, 196, 48, 0.2); color: var(--primary-color); padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">${escapeHtml(review.category)}</span>
+                        <span style="display: inline-block; background: rgba(100, 200, 255, 0.2); color: #64c8ff; padding: 5px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">${escapeHtml(review.type)}</span>
+                        <div style="color: var(--primary-color); font-size: 1.3rem; margin-left: auto;">${'★'.repeat(review.rating)}${'☆'.repeat(5-review.rating)}</div>
+                    </div>
                 </div>
-                <button onclick="deleteReview(${review.id})" style="background: rgba(244, 196, 48, 0.2); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 8px 16px; border-radius: 5px; cursor: pointer; transition: all 0.3s;">Delete</button>
+                <button onclick="deleteReview(${review.id})" style="background: rgba(244, 196, 48, 0.2); border: 1px solid var(--primary-color); color: var(--primary-color); padding: 8px 16px; border-radius: 5px; cursor: pointer; transition: all 0.3s; margin-left: 10px;">Delete</button>
             </div>
             <p style="color: #ccc; line-height: 1.6; margin: 15px 0; font-style: italic;">"${escapeHtml(review.message)}"</p>
             <p style="color: #888; font-size: 0.9rem;">${review.date}</p>
